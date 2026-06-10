@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Works — Tayocodes</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0a;
+        --surface: #111111;
+        --border: #1e1e1e;
+        --accent: #c8f542;
+        --accent2: #42f5c8;
+        --text: #f0f0ec;
+        --muted: #666;
+        --font-display: "Bebas Neue", sans-serif;
+        --font-body: "DM Sans", sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.6;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      .cursor {
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+      }
+      .cursor-ring {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          left 0.12s ease,
+          top 0.12s ease,
+          width 0.25s,
+          height 0.25s,
+          border-color 0.2s;
+        opacity: 0.6;
+      }
+      body.cursor-hover .cursor {
+        width: 16px;
+        height: 16px;
+        background: var(--accent2);
+      }
+      body.cursor-hover .cursor-ring {
+        width: 56px;
+        height: 56px;
+        border-color: var(--accent2);
+        opacity: 0.3;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+        pointer-events: none;
+        z-index: 9990;
+        opacity: 0.5;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 48px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        background: rgba(10, 10, 10, 0.92);
+      }
+      .logo {
+        font-family: var(--font-display);
+        font-size: 28px;
+        letter-spacing: 2px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 36px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--text);
+      }
+      .nav-cta {
+        background: var(--accent);
+        color: #0a0a0a !important;
+        padding: 8px 20px;
+        border-radius: 2px;
+        font-weight: 500 !important;
+      }
+      .nav-cta:hover {
+        background: var(--accent2) !important;
+      }
+      a {
+        cursor: none;
+      }
+
+      /* ── HAMBURGER BUTTON ── */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: none;
+        z-index: 210;
+        position: relative;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 24px;
+        height: 1.5px;
+        background: var(--text);
+        transition:
+          transform 0.3s ease,
+          opacity 0.2s,
+          width 0.3s;
+        transform-origin: center;
+      }
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+        width: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+      }
+
+      /* ── DROPDOWN MENU ── */
+      /* Backdrop — click anywhere to close */
+      .menu-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 195;
+        background: transparent;
+      }
+      .menu-backdrop.open {
+        display: block;
+      }
+
+      /* Dropdown panel — slides down from nav bar */
+      .mobile-menu {
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 198;
+        background: rgba(10, 10, 10, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 24px;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.35s cubic-bezier(0.77, 0, 0.18, 1),
+          padding 0.3s ease;
+      }
+      .mobile-menu.open {
+        max-height: 420px;
+        padding: 20px 24px 28px;
+      }
+
+      .mobile-menu-links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+      }
+      .mobile-menu-links li {
+        border-bottom: 1px solid var(--border);
+      }
+      .mobile-menu-links li:last-child {
+        border-bottom: none;
+      }
+      .mobile-menu-links a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 4px;
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--text);
+        text-decoration: none;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        transition:
+          color 0.15s,
+          padding-left 0.15s;
+      }
+      .mobile-menu-links a:active {
+        color: var(--accent);
+      }
+      .menu-num {
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.15em;
+      }
+
+      .mobile-menu-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+        background: var(--accent);
+        color: #0a0a0a;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 13px 24px;
+        border-radius: 2px;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .mobile-menu-cta:hover,
+      .mobile-menu-cta:active {
+        background: var(--accent2);
+      }
+
+      /* ── PAGE HEADER ── */
+      .page-header {
+        padding: 140px 48px 72px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+      .page-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 50% 80% at 80% 50%,
+          rgba(200, 245, 66, 0.06) 0%,
+          transparent 70%
+        );
+      }
+      .page-header-inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .page-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(72px, 12vw, 180px);
+        line-height: 0.88;
+      }
+      .page-header h1 .outline {
+        -webkit-text-stroke: 1.5px var(--muted);
+        color: transparent;
+      }
+      .page-header-meta {
+        text-align: right;
+        padding-bottom: 8px;
+      }
+      .page-header-meta p {
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .page-header-meta strong {
+        color: var(--accent);
+        font-weight: 400;
+        font-size: 14px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: color 0.15s;
+        margin-bottom: 24px;
+        /* no animation delay — responds instantly */
+      }
+      .back-link:hover,
+      .back-link:active {
+        color: var(--accent);
+      }
+
+      /* ── WORKS GRID ── */
+      .works-grid-section {
+        padding: 64px 48px 120px;
+      }
+      .works-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+      }
+
+      .work-item {
+        position: relative;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        aspect-ratio: 4/3;
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+      .work-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .work-visual {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-size: clamp(48px, 6vw, 96px);
+        letter-spacing: -2px;
+        color: var(--border);
+        transition:
+          color 0.4s,
+          transform 0.6s;
+        overflow: hidden;
+      }
+      .work-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        opacity: 0.65;
+        transition:
+          opacity 0.4s,
+          transform 0.6s;
+      }
+      .work-item:hover .work-visual img {
+        opacity: 0.4;
+        transform: scale(1.05);
+      }
+      .work-item:hover .work-visual {
+        color: rgba(200, 245, 66, 0.1);
+        transform: scale(1.08);
+      }
+
+      .work-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9) 0%,
+          rgba(0, 0, 0, 0.2) 60%,
+          transparent 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .work-item:hover .work-overlay {
+        opacity: 1;
+      }
+
+      .work-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 28px 24px;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+      }
+      .work-item:hover .work-info {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .work-cat {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: rgba(200, 245, 66, 0.12);
+        padding: 3px 9px;
+        border-radius: 2px;
+        margin-bottom: 8px;
+      }
+      .work-name {
+        font-family: var(--font-display);
+        font-size: 28px;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .work-tech {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .work-year {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        font-size: 11px;
+        color: var(--muted);
+        background: rgba(10, 10, 10, 0.6);
+        padding: 4px 10px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+      }
+      .work-link-icon {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 38px;
+        height: 38px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0.6) rotate(-45deg);
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+      }
+      .work-item:hover .work-link-icon {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+      .work-link-icon svg {
+        width: 14px;
+        height: 14px;
+        stroke: #0a0a0a;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 36px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .footer-logo {
+        font-family: var(--font-display);
+        font-size: 22px;
+        letter-spacing: 2px;
+      }
+      .footer-logo span {
+        color: var(--accent);
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+      }
+      .footer-links a {
+        font-size: 12px;
+        color: var(--muted);
+        text-decoration: none;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .anim {
+        opacity: 0;
+        animation: fadeUp 0.6s forwards;
+      }
+      .anim-d1 {
+        animation-delay: 0.1s;
+      }
+      .anim-d2 {
+        animation-delay: 0.2s;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 20px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .page-header {
+          padding: 110px 24px 56px;
+        }
+        .page-header-inner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
+        }
+        .page-header-meta {
+          text-align: left;
+        }
+        .works-grid-section {
+          padding: 36px 20px 80px;
+        }
+        .works-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2px;
+        }
+        footer {
+          flex-direction: column;
+          gap: 16px;
+          text-align: center;
+          padding: 28px 20px;
+        }
+      }
+      @media (max-width: 520px) {
+        .works-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- BACKDROP — clicking anywhere outside closes menu -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+      <a href="tayocodes-portfolio.html" class="logo">Tayo<span>codes</span></a>
+      <ul class="nav-links">
+        <li><a href="tayocodes-portfolio.html#about">About</a></li>
+        <li><a href="tayocodes-portfolio.html#services">Services</a></li>
+        <li><a href="#" class="active">Work</a></li>
+        <li><a href="tayocodes-portfolio.html#process">Process</a></li>
+        <li>
+          <a href="tayocodes-portfolio.html#contact" class="nav-cta"
+            >Let's Talk</a
+          >
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- DROPDOWN MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+      <ul class="mobile-menu-links">
+        <li>
+          <a href="tayocodes-portfolio.html#about"
+            ><span>About</span><span class="menu-num">01</span></a
+          >
+        </li>
+        <li>
+          <a href="tayocodes-portfolio.html#services"
+            ><span>Services</span><span class="menu-num">02</span></a
+          >
+        </li>
+        <li>
+          <a href="#"><span>Work</span><span class="menu-num">03</span></a>
+        </li>
+        <li>
+          <a href="tayocodes-portfolio.html#process"
+            ><span>Process</span><span class="menu-num">04</span></a
+          >
+        </li>
+      </ul>
+      <a href="tayocodes-portfolio.html#contact" class="mobile-menu-cta">
+        Let's Talk
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+          <path
+            d="M2 7h10M7 2l5 5-5 5"
+            stroke="#0a0a0a"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <a href="tayocodes-portfolio.html" class="back-link">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M12 7H2M7 2L2 7l5 5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Back Home
+          </a>
+          <h1 class="anim anim-d1">
+            ALL<br /><span class="outline">WORKS</span>
+          </h1>
+        </div>
+        <div class="page-header-meta anim anim-d2">
+          <p>Total Projects</p>
+          <strong>8 Websites</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- WORKS GRID -->
+    <section class="works-grid-section">
+      <div class="works-grid">
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Suave Luxury"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2025</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">E-Commerce</span>
+            <div class="work-name">SUAVE LUXURY</div>
+            <div class="work-tech">Premium Jewelry Store</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://joffany-eye.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://joffany-eye.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Joffany Eye Care"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2026</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Eye Clinic</span>
+            <div class="work-name">Joffany Eye Care</div>
+            <div class="work-tech">Optometry Services</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://capitalappliances.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://capitalappliances.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Capital Appliances"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2026</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Appliances</span>
+            <div class="work-name">Capital Appliances</div>
+            <div class="work-tech">Home Appliances Store</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Project 4"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2025</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 04</div>
+            <div class="work-tech">Update link &amp; name</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Project 5"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2025</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 05</div>
+            <div class="work-tech">Update link &amp; name</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Project 6"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2024</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 06</div>
+            <div class="work-tech">Update link &amp; name</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Project 7"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2024</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 07</div>
+            <div class="work-tech">Update link &amp; name</div>
+          </div>
+        </a>
+
+        <a
+          class="work-item"
+          href="https://jewelrystore-ten.vercel.app"
+          target="_blank"
+        >
+          <div class="work-visual">
+            <img
+              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+              alt="Project 8"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="work-year">2024</div>
+          <div class="work-link-icon">
+            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
+          </div>
+          <div class="work-overlay"></div>
+          <div class="work-info">
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 08</div>
+            <div class="work-tech">Update link &amp; name</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <span class="footer-logo">Tayo<span>codes</span></span>
+      <span class="footer-copy">© 2026 Tayocodes. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </footer>
+
+    <script>
+      // Cursor
+      const cursor = document.getElementById("cursor");
+      const cursorRing = document.getElementById("cursorRing");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+        cursorRing.style.left = e.clientX + "px";
+        cursorRing.style.top = e.clientY + "px";
+      });
+      document.querySelectorAll("a, button, .work-item").forEach((el) => {
+        el.addEventListener("mouseenter", () =>
+          document.body.classList.add("cursor-hover"),
+        );
+        el.addEventListener("mouseleave", () =>
+          document.body.classList.remove("cursor-hover"),
+        );
+      });
+
+      // Hamburger dropdown
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const backdrop = document.getElementById("menuBackdrop");
+
+      function closeMenu() {
+        hamburger.classList.remove("active");
+        mobileMenu.classList.remove("open");
+        backdrop.classList.remove("open");
+      }
+      function openMenu() {
+        hamburger.classList.add("active");
+        mobileMenu.classList.add("open");
+        backdrop.classList.add("open");
+      }
+
+      hamburger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.contains("open") ? closeMenu() : openMenu();
+      });
+
+      // Close when clicking the backdrop (anywhere outside)
+      backdrop.addEventListener("click", closeMenu);
+
+      // Close when a nav link is tapped
+      mobileMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      // Scroll reveal for work cards
+      const items = document.querySelectorAll(".work-item");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+              setTimeout(() => e.target.classList.add("visible"), i * 70);
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      items.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
