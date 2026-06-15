@@ -39,57 +39,9 @@
         font-size: 16px;
         line-height: 1.6;
         overflow-x: hidden;
-        cursor: none;
       }
       body.menu-open {
         overflow: hidden;
-      }
-
-      .cursor {
-        width: 10px;
-        height: 10px;
-        background: var(--accent);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition:
-          width 0.2s,
-          height 0.2s,
-          background 0.2s;
-      }
-      .cursor-ring {
-        width: 36px;
-        height: 36px;
-        border: 1.5px solid var(--accent);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9998;
-        transform: translate(-50%, -50%);
-        transition:
-          left 0.12s ease,
-          top 0.12s ease,
-          width 0.25s,
-          height 0.25s,
-          border-color 0.2s;
-        opacity: 0.6;
-      }
-      body.cursor-hover .cursor {
-        width: 16px;
-        height: 16px;
-        background: var(--accent2);
-      }
-      body.cursor-hover .cursor-ring {
-        width: 56px;
-        height: 56px;
-        border-color: var(--accent2);
-        opacity: 0.3;
       }
 
       body::before {
@@ -1052,9 +1004,7 @@
       .reveal-delay-4 {
         transition-delay: 0.4s;
       }
-      a {
-        cursor: none;
-      }
+      /* links default cursor restored on touch devices */
 
       /* ─── RESPONSIVE ─── */
       @media (max-width: 900px) {
@@ -1109,9 +1059,6 @@
     </style>
   </head>
   <body>
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-
     <!-- BACKDROP -->
     <div class="menu-backdrop" id="menuBackdrop"></div>
 
@@ -1338,6 +1285,7 @@
         </a>
       </div>
       <div class="works-preview">
+        <!-- Large featured card: Suave Luxury -->
         <a
           href="https://jewelrystore-ten.vercel.app"
           target="_blank"
@@ -1374,18 +1322,28 @@
         </a>
 
         <div class="works-right">
-          <div
+          <!-- Joffany Eye Care -->
+          <a
+            href="https://joffany-eye.vercel.app"
+            target="_blank"
             class="work-card reveal reveal-delay-1"
-            onclick="window.location = 'works.html'"
-            style="cursor: none"
+            style="text-decoration: none; display: block"
           >
-            <div class="work-card-visual">+7</div>
+            <div class="work-card-visual">
+              <img
+                src="https://api.microlink.io/?url=https://joffany-eye.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
+                alt="Joffany Eye Care"
+                onerror="this.style.display = 'none'"
+              />
+            </div>
             <div class="work-card-overlay"></div>
             <div class="work-card-inner">
               <div class="work-card-content">
-                <span class="work-tag">More Projects</span>
-                <h3 class="work-title">MORE COMING</h3>
-                <p class="work-desc">7 more projects in the full portfolio</p>
+                <span class="work-tag">Healthcare</span>
+                <h3 class="work-title">JOFFANY EYE</h3>
+                <p class="work-desc">
+                  Eye clinic booking site with appointment management
+                </p>
               </div>
               <div class="work-arrow">
                 <svg viewBox="0 0 20 20">
@@ -1397,8 +1355,9 @@
                 </svg>
               </div>
             </div>
-          </div>
+          </a>
 
+          <!-- All Works CTA -->
           <a href="works.html" class="works-cta-card reveal reveal-delay-2">
             <span class="works-cta-label">Browse Portfolio</span>
             <div class="works-cta-title">ALL<br />WORKS</div>
@@ -1495,33 +1454,25 @@
       <span class="footer-logo">Tayo<span>codes</span></span>
       <span class="footer-copy">© 2026 Tayocodes. All rights reserved.</span>
       <div class="footer-links">
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
+        <a href="https://wa.me/2348135834714" target="_blank" rel="noopener"
+          >WhatsApp</a
+        >
+        <a
+          href="https://www.instagram.com/tayo.codes?igsh=MTgyaWIsemVINW1icg=="
+          target="_blank"
+          rel="noopener"
+          >Instagram</a
+        >
+        <a
+          href="https://www.linkedin.com/in/alonge-temitayo-944a5a410?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
       </div>
     </footer>
 
     <script>
-      // Custom cursor
-      const cursor = document.getElementById("cursor");
-      const cursorRing = document.getElementById("cursorRing");
-      document.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-        cursorRing.style.left = e.clientX + "px";
-        cursorRing.style.top = e.clientY + "px";
-      });
-      document
-        .querySelectorAll("a, button, .work-card, .service-card, .stat-card")
-        .forEach((el) => {
-          el.addEventListener("mouseenter", () =>
-            document.body.classList.add("cursor-hover"),
-          );
-          el.addEventListener("mouseleave", () =>
-            document.body.classList.remove("cursor-hover"),
-          );
-        });
-
       // Nav scroll
       const nav = document.getElementById("nav");
       window.addEventListener("scroll", () =>

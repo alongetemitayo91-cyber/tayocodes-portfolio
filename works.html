@@ -37,54 +37,6 @@
         font-size: 16px;
         line-height: 1.6;
         overflow-x: hidden;
-        cursor: none;
-      }
-
-      .cursor {
-        width: 10px;
-        height: 10px;
-        background: var(--accent);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition:
-          width 0.2s,
-          height 0.2s,
-          background 0.2s;
-      }
-      .cursor-ring {
-        width: 36px;
-        height: 36px;
-        border: 1.5px solid var(--accent);
-        border-radius: 50%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-        z-index: 9998;
-        transform: translate(-50%, -50%);
-        transition:
-          left 0.12s ease,
-          top 0.12s ease,
-          width 0.25s,
-          height 0.25s,
-          border-color 0.2s;
-        opacity: 0.6;
-      }
-      body.cursor-hover .cursor {
-        width: 16px;
-        height: 16px;
-        background: var(--accent2);
-      }
-      body.cursor-hover .cursor-ring {
-        width: 56px;
-        height: 56px;
-        border-color: var(--accent2);
-        opacity: 0.3;
       }
 
       body::before {
@@ -152,9 +104,7 @@
       .nav-cta:hover {
         background: var(--accent2) !important;
       }
-      a {
-        cursor: none;
-      }
+      /* links default cursor restored on touch devices */
 
       /* ── HAMBURGER BUTTON ── */
       .hamburger {
@@ -614,9 +564,6 @@
     </style>
   </head>
   <body>
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
-
     <!-- BACKDROP — clicking anywhere outside closes menu -->
     <div class="menu-backdrop" id="menuBackdrop"></div>
 
@@ -626,11 +573,9 @@
       <ul class="nav-links">
         <li><a href="index.html#about">About</a></li>
         <li><a href="index.html#services">Services</a></li>
-        <li><a href="index.html#work" class="active">Work</a></li>
+        <li><a href="#" class="active">Work</a></li>
         <li><a href="index.html#process">Process</a></li>
-        <li>
-          <a href="index.html#contact" class="nav-cta">Let's Talk</a>
-        </li>
+        <li><a href="index.html#contact" class="nav-cta">Let's Talk</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -651,9 +596,7 @@
           >
         </li>
         <li>
-          <a href="index.html#work" class="active"
-            ><span>Work</span><span class="menu-num">03</span></a
-          >
+          <a href="#"><span>Work</span><span class="menu-num">03</span></a>
         </li>
         <li>
           <a href="index.html#process"
@@ -697,7 +640,7 @@
         </div>
         <div class="page-header-meta anim anim-d2">
           <p>Total Projects</p>
-          <strong>8 Websites</strong>
+          <strong>3 Live · 5 Coming</strong>
         </div>
       </div>
     </header>
@@ -705,6 +648,7 @@
     <!-- WORKS GRID -->
     <section class="works-grid-section">
       <div class="works-grid">
+        <!-- 1. Suave Luxury -->
         <a
           class="work-item"
           href="https://jewelrystore-ten.vercel.app"
@@ -717,7 +661,7 @@
               onerror="this.style.display = 'none'"
             />
           </div>
-          <div class="work-year">2026</div>
+          <div class="work-year">2025</div>
           <div class="work-link-icon">
             <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
           </div>
@@ -729,6 +673,7 @@
           </div>
         </a>
 
+        <!-- 2. Joffany Eye Care -->
         <a
           class="work-item"
           href="https://joffany-eye.vercel.app"
@@ -741,18 +686,19 @@
               onerror="this.style.display = 'none'"
             />
           </div>
-          <div class="work-year">2026</div>
+          <div class="work-year">2025</div>
           <div class="work-link-icon">
             <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
           </div>
           <div class="work-overlay"></div>
           <div class="work-info">
-            <span class="work-cat">Eye Clinic</span>
-            <div class="work-name">Joffany Eye Care</div>
-            <div class="work-tech">Optometry Services</div>
+            <span class="work-cat">Healthcare</span>
+            <div class="work-name">JOFFANY EYE CARE</div>
+            <div class="work-tech">Eye Clinic &amp; Booking Site</div>
           </div>
         </a>
 
+        <!-- 3. Capital Appliances -->
         <a
           class="work-item"
           href="https://capitalappliances.vercel.app"
@@ -765,34 +711,27 @@
               onerror="this.style.display = 'none'"
             />
           </div>
-          <div class="work-year">2026</div>
+          <div class="work-year">2025</div>
           <div class="work-link-icon">
             <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
           </div>
           <div class="work-overlay"></div>
           <div class="work-info">
-            <span class="work-cat">Appliances</span>
-            <div class="work-name">Capital Appliances</div>
-            <div class="work-tech">Home Appliances Store</div>
+            <span class="work-cat">E-Commerce</span>
+            <div class="work-name">CAPITAL APPLIANCES</div>
+            <div class="work-tech">Appliances Retail Store</div>
           </div>
         </a>
 
-        <a
-          class="work-item"
-          href="https://jewelrystore-ten.vercel.app"
-          target="_blank"
-        >
-          <div class="work-visual">
-            <img
-              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
-              alt="Project 4"
-              onerror="this.style.display = 'none'"
-            />
+        <!-- 4–8: Placeholders -->
+        <a class="work-item" href="#" target="_blank">
+          <div
+            class="work-visual"
+            style="font-size: clamp(32px, 4vw, 56px); color: #2a2a2a"
+          >
+            COMING<br />SOON
           </div>
           <div class="work-year">2025</div>
-          <div class="work-link-icon">
-            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
-          </div>
           <div class="work-overlay"></div>
           <div class="work-info">
             <span class="work-cat">Coming Soon</span>
@@ -801,46 +740,30 @@
           </div>
         </a>
 
-        <a
-          class="work-item"
-          href="https://tayocodes-portfolio.vercel.app"
-          target="_blank"
-        >
-          <div class="work-visual">
-            <img
-              src="https://api.microlink.io/?url=https://tayocodes-portfolio.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
-              alt="Web Business Portfolio"
-              onerror="this.style.display = 'none'"
-            />
+        <a class="work-item" href="#" target="_blank">
+          <div
+            class="work-visual"
+            style="font-size: clamp(32px, 4vw, 56px); color: #2a2a2a"
+          >
+            COMING<br />SOON
           </div>
-          <div class="work-year">2026</div>
-          <div class="work-link-icon">
-            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
-          </div>
+          <div class="work-year">2025</div>
           <div class="work-overlay"></div>
           <div class="work-info">
-            <span class="work-cat">Tech</span>
-            <div class="work-name">Business Portfolio</div>
-            <div class="work-tech">Web Development</div>
+            <span class="work-cat">Coming Soon</span>
+            <div class="work-name">PROJECT 05</div>
+            <div class="work-tech">Update link &amp; name</div>
           </div>
         </a>
 
-        <a
-          class="work-item"
-          href="https://jewelrystore-ten.vercel.app"
-          target="_blank"
-        >
-          <div class="work-visual">
-            <img
-              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
-              alt="Project 6"
-              onerror="this.style.display = 'none'"
-            />
+        <a class="work-item" href="#" target="_blank">
+          <div
+            class="work-visual"
+            style="font-size: clamp(32px, 4vw, 56px); color: #2a2a2a"
+          >
+            COMING<br />SOON
           </div>
-          <div class="work-year">2024</div>
-          <div class="work-link-icon">
-            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
-          </div>
+          <div class="work-year">2025</div>
           <div class="work-overlay"></div>
           <div class="work-info">
             <span class="work-cat">Coming Soon</span>
@@ -849,22 +772,14 @@
           </div>
         </a>
 
-        <a
-          class="work-item"
-          href="https://jewelrystore-ten.vercel.app"
-          target="_blank"
-        >
-          <div class="work-visual">
-            <img
-              src="https://api.microlink.io/?url=https://jewelrystore-ten.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
-              alt="Project 7"
-              onerror="this.style.display = 'none'"
-            />
+        <a class="work-item" href="#" target="_blank">
+          <div
+            class="work-visual"
+            style="font-size: clamp(32px, 4vw, 56px); color: #2a2a2a"
+          >
+            COMING<br />SOON
           </div>
           <div class="work-year">2024</div>
-          <div class="work-link-icon">
-            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
-          </div>
           <div class="work-overlay"></div>
           <div class="work-info">
             <span class="work-cat">Coming Soon</span>
@@ -873,22 +788,14 @@
           </div>
         </a>
 
-        <a
-          class="work-item"
-          href="https://tayocodes-portfolio.vercel.app"
-          target="_blank"
-        >
-          <div class="work-visual">
-            <img
-              src="https://api.microlink.io/?url=https://tayocodes-portfolio.vercel.app&screenshot=true&meta=false&embed=screenshot.url"
-              alt="Project 8"
-              onerror="this.style.display = 'none'"
-            />
+        <a class="work-item" href="#" target="_blank">
+          <div
+            class="work-visual"
+            style="font-size: clamp(32px, 4vw, 56px); color: #2a2a2a"
+          >
+            COMING<br />SOON
           </div>
           <div class="work-year">2024</div>
-          <div class="work-link-icon">
-            <svg viewBox="0 0 14 14"><path d="M2 12L12 2M12 2H6M12 2v6" /></svg>
-          </div>
           <div class="work-overlay"></div>
           <div class="work-info">
             <span class="work-cat">Coming Soon</span>
@@ -903,31 +810,25 @@
       <span class="footer-logo">Tayo<span>codes</span></span>
       <span class="footer-copy">© 2026 Tayocodes. All rights reserved.</span>
       <div class="footer-links">
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
+        <a href="https://wa.me/2348135834714" target="_blank" rel="noopener"
+          >WhatsApp</a
+        >
+        <a
+          href="https://www.instagram.com/tayo.codes?igsh=MTgyaWIsemVINW1icg=="
+          target="_blank"
+          rel="noopener"
+          >Instagram</a
+        >
+        <a
+          href="https://www.linkedin.com/in/alonge-temitayo-944a5a410?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn</a
+        >
       </div>
     </footer>
 
     <script>
-      // Cursor
-      const cursor = document.getElementById("cursor");
-      const cursorRing = document.getElementById("cursorRing");
-      document.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
-        cursorRing.style.left = e.clientX + "px";
-        cursorRing.style.top = e.clientY + "px";
-      });
-      document.querySelectorAll("a, button, .work-item").forEach((el) => {
-        el.addEventListener("mouseenter", () =>
-          document.body.classList.add("cursor-hover"),
-        );
-        el.addEventListener("mouseleave", () =>
-          document.body.classList.remove("cursor-hover"),
-        );
-      });
-
       // Hamburger dropdown
       const hamburger = document.getElementById("hamburger");
       const mobileMenu = document.getElementById("mobileMenu");
